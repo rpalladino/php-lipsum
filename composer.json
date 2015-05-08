@@ -3,5 +3,8 @@
         "psr-4": {
             "Rpalladino\\Lipsum\\": "src/"
         }
+    },
+    "require": {
+        "symfony/console": "~2.6"
     }
 }
