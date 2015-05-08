@@ -7,4 +7,9 @@
     <php>
         <ini name="error_reporting" value="32767" /> <!-- E_ALL -->
     </php>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
