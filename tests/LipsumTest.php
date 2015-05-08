@@ -13,6 +13,7 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
     public function usesServiceToGetText($options, $what, $amount, $start)
     {
         $service = $this->prophesize("Rpalladino\Lipsum\Service");
+        $service->fetch($what, $amount, $start)->willReturn((object) ["lipsum" => ""]);
 
         $lipsum = new Lipsum($service->reveal());
         $text = $lipsum->getText($options);
