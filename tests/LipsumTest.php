@@ -6,9 +6,16 @@ use Rpalladino\Lipsum\Lipsum;
 
 class LipsumTest extends \PHPUnit_Framework_TestCase
 {
+    private $lipsum;
+
+    public function setUp()
+    {
+        $this->lipsum = new Lipsum;
+    }
+
     /**
      * @test
-     * @dataProvider textOptionsToServiceCalls
+     * @dataProvider textOptionsAndServiceArguments
      */
     public function usesServiceToGetText($options, $what, $amount, $start)
     {
@@ -21,7 +28,7 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
         $service->fetch($what, $amount, $start)->shouldHaveBeenCalled();
     }
 
-    public function textOptionsToServiceCalls()
+    public function textOptionsAndServiceArguments()
     {
         return [
             [[], null, null, null],
@@ -39,20 +46,38 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
      */
     public function getsTextUsingDefaults()
     {
-        $lipsum = new Lipsum;
-        $this->assertInternalType('string', $lipsum->getText());
+        $this->assertInternalType('string', $this->lipsum->getText());
     }
 
     /**
      * @test
      * @group integration
+     * @dataProvider kindsOfText
      */
-    public function getsTextStartingWithLoremIpsum()
+    public function getsTextStartingWithLoremIpsum($what)
     {
-        $lipsum = new Lipsum;
-        $startText = "Lorem ipsum dolor sit amet";
-        $this->assertStringStartsWith($startText, $lipsum->getText(["start" => true]));
-        $this->assertStringStartsNotWith($startText, $lipsum->getText(["start" => false]));
+        $this->assertStringStartsWith(
+            "Lorem ipsum dolor sit amet",
+            $this->lipsum->getText(["what" => $what, "start" => true])
+        );
+    }
+
+    /**
+     * @test
+     * @group integration
+     * @dataProvider kindsOfText
+     */
+    public function getsTextStartingWithoutLoremIpsum($what)
+    {
+        $this->assertStringStartsNotWith(
+            "Lorem ipsum dolor sit amet",
+            $this->lipsum->getText(["what" => $what, "start" => false])
+        );
+    }
+
+    public function kindsOfText()
+    {
+        return [["paras"], ["words"], ["bytes"], ["lists"]];
     }
 
     /**
@@ -61,9 +86,7 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
      */
     public function getsSpecifiedAmountOfParagraphs()
     {
-        $lipsum = new Lipsum;
-        $paragraphs = $lipsum->getText(["what" => "paras", "amount" => 5]);
-        $this->assertCount(5, explode("\n", $paragraphs));
+        $this->assertEquals(5, lineCount($this->lipsum->getParagraphs(5)));
     }
 
     /**
@@ -72,9 +95,7 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
      */
     public function getsSpecifiedAmountOfWords()
     {
-        $lipsum = new Lipsum;
-        $words = $lipsum->getText(["what" => "words", "amount" => 25]);
-        $this->assertCount(25, explode(" ", $words));
+        $this->assertEquals(25, str_word_count($this->lipsum->getWords(25)));
     }
 
     /**
@@ -83,9 +104,7 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
      */
     public function getsSpecifiedAmountOfBytes()
     {
-        $lipsum = new Lipsum;
-        $bytes = $lipsum->getText(["what" => "bytes", "amount" => 256]);
-        $this->assertEquals(256, strlen($bytes));
+        $this->assertEquals(256, strlen($this->lipsum->getBytes(256)));
     }
 
     /**
@@ -94,8 +113,11 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
      */
     public function getsSpecifiedAmountOfListItems()
     {
-        $lipsum = new Lipsum;
-        $lists = $lipsum->getText(["what" => "lists", "amount" => 5]);
-        $this->assertCount(5, explode("\n", $lists));
+        $this->assertEquals(5, lineCount($this->lipsum->getLists(5)));
     }
+}
+
+function lineCount($text)
+{
+    return substr_count($text, "\n") + 1;
 }

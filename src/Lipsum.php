@@ -21,4 +21,28 @@ class Lipsum
         $response = $this->service->fetch($what, $amount, $start);
         return $response->lipsum;
     }
+
+    public function getParagraphs($amount = 5, $start = true)
+    {
+        $what = "paras";
+        return $this->getText(compact('what', 'amount', 'start'));
+    }
+
+    public function getWords($amount = 5, $start = true)
+    {
+        $what = "words";
+        return $this->getText(compact('what', 'amount', 'start'));
+    }
+
+    public function getBytes($amount = 5, $start = true)
+    {
+        $what = "bytes";
+        return $this->getText(compact('what', 'amount', 'start'));
+    }
+
+    public function getLists($amount = 5, $start = true)
+    {
+        $what = "lists";
+        return $this->getText(compact('what', 'amount', 'start'));
+    }
 }
