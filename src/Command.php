@@ -44,6 +44,6 @@ class Command extends ConsoleCommand
         $amount = $input->getOption("amount");
         $start  = $input->getOption("start-with-lipsum");
         
-        $output->writeln($lipsum->getText(compact('what', 'amount', 'start')));
+        $output->writeln($lipsum->getText($what, $amount, $start));
     }
 }

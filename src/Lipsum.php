@@ -11,38 +11,29 @@ class Lipsum
         $this->service = $service ?: new Service;
     }
 
-    public function getText(array $options = array())
+    public function getText($what = null, $amount = null, $start = null)
     {
-        extract($options);
-        $what   = isset($what)   ? $what   : null;
-        $amount = isset($amount) ? $amount : null;
-        $start  = isset($start)  ? $start  : null;
-
         $response = $this->service->fetch($what, $amount, $start);
         return $response->lipsum;
     }
 
-    public function getParagraphs($amount = 5, $start = true)
+    public function getParagraphs($amount = null, $start = null)
     {
-        $what = "paras";
-        return $this->getText(compact('what', 'amount', 'start'));
+        return $this->getText("paras", $amount, $start);
     }
 
-    public function getWords($amount = 5, $start = true)
+    public function getWords($amount = null, $start = null)
     {
-        $what = "words";
-        return $this->getText(compact('what', 'amount', 'start'));
+        return $this->getText("words", $amount, $start);
     }
 
-    public function getBytes($amount = 5, $start = true)
+    public function getBytes($amount = null, $start = null)
     {
-        $what = "bytes";
-        return $this->getText(compact('what', 'amount', 'start'));
+        return $this->getText("bytes", $amount, $start);
     }
 
-    public function getLists($amount = 5, $start = true)
+    public function getLists($amount = null, $start = null)
     {
-        $what = "lists";
-        return $this->getText(compact('what', 'amount', 'start'));
+        return $this->getText("lists", $amount, $start);
     }
 }

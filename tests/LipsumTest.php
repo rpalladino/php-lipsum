@@ -15,28 +15,28 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider textOptionsAndServiceArguments
+     * @dataProvider serviceArguments
      */
-    public function usesServiceToGetText($options, $what, $amount, $start)
+    public function usesServiceToGetText($what, $amount, $start)
     {
         $service = $this->prophesize("Rpalladino\Lipsum\Service");
         $service->fetch($what, $amount, $start)->willReturn((object) ["lipsum" => ""]);
 
         $lipsum = new Lipsum($service->reveal());
-        $text = $lipsum->getText($options);
+        $text = $lipsum->getText($what, $amount, $start);
 
         $service->fetch($what, $amount, $start)->shouldHaveBeenCalled();
     }
 
-    public function textOptionsAndServiceArguments()
+    public function serviceArguments()
     {
         return [
-            [[], null, null, null],
-            [["what" => "bytes"], "bytes", null, null],
-            [["amount" => 30,], null, 30, null],
-            [["start" => false,], null, null, false],
-            [["what" => "words", "amount" => 50], "words", 50, null],
-            [["what" => "paras", "amount" => 10, "start" => false], "paras", 10, false],
+            [null, null, null],
+            ["bytes", null, null],
+            [null, 30, null],
+            [null, null, false],
+            ["words", 50, null],
+            ["paras", 10, false],
         ];
     }
 
@@ -58,7 +58,7 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertStringStartsWith(
             "Lorem ipsum dolor sit amet",
-            $this->lipsum->getText(["what" => $what, "start" => true])
+            $this->lipsum->getText($what, null, true)
         );
     }
 
@@ -71,7 +71,7 @@ class LipsumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertStringStartsNotWith(
             "Lorem ipsum dolor sit amet",
-            $this->lipsum->getText(["what" => $what, "start" => false])
+            $this->lipsum->getText($what, null, false)
         );
     }
 
