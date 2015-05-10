@@ -7,8 +7,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Provides the main lipsum command used by the console application. 
+ */
 class Command extends ConsoleCommand
 {
+    /**
+     * Configures the lipsum command and options.
+     *
+     * @internal 
+     * 
+     * @return void
+     */
     protected function configure()
     {
         $this->setName("lipsum")
@@ -36,6 +46,16 @@ class Command extends ConsoleCommand
              );
     }
 
+    /**
+     * Execute the lipsum command
+     *
+     * @internal
+     * 
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
+     * 
+     * @return void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $lipsum = new Lipsum;
