@@ -2,6 +2,7 @@
     "name": "rpalladino/php-lipsum",
     "description": "CLI and PHP class for generating dummy text using www.lipsum.com",
     "license": "MIT",
+    "bin": ["bin/lipsum"],
     "autoload": {
         "psr-4": {
             "Rpalladino\\Lipsum\\": "src/"
