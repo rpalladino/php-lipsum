@@ -1,7 +1,16 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ . "/../vendor/autoload.php";
+if (! ini_get('date.timezone')) {
+    ini_set('date.timezone', 'UTC');
+}
+
+foreach ([__DIR__ . "/../../../autoload.php", __DIR__ . "/../vendor/autoload.php"] as $autoloader) {
+    if (file_exists($autoloader)) {
+        require $autoloader;
+        break;
+    }
+}
 
 $cli = new Rpalladino\Lipsum\CLI('php-lipsum', '0.1-dev');
 $cli->run();
