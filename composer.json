@@ -11,7 +11,8 @@
         "symfony/console": "~2.6"
     },
     "require-dev": {
-        "apigen/apigen": "^4.1"
+        "apigen/apigen": "^4.1",
+        "phpunit/phpunit": "~4.5"
     },
     "scripts": {
         "docs:api": "apigen generate --source src/ --destination docs/api/ --template-theme bootstrap",
