@@ -97,7 +97,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itGetsSpecifiedAmountOfLitItems()
+    public function itGetsSpecifiedAmountOfListItems()
     {
         $this->commandTester->execute([
             "command" => $this->command->getName(),
